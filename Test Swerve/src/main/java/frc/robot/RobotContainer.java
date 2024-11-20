@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import frc.robot.autos.exampleAuto;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
@@ -23,9 +24,9 @@ public class RobotContainer {
   private final CommandJoystick driver = new CommandJoystick(0);
 
   /* Drive Controls */
-  private final int translationAxis = XboxController.Axis.kLeftY.value;
-  private final int strafeAxis = XboxController.Axis.kLeftX.value;
-  private final int rotationAxis = XboxController.Axis.kRightY.value;
+  // private final int translationAxis = XboxController.Axis.kLeftY.value;
+  // private final int strafeAxis = XboxController.Axis.kLeftX.value;
+  // private final int rotationAxis = XboxController.Axis.kRightY.value;
 
   /* Driver Buttons */
  // private final JoystickButton zeroGyro =
@@ -68,7 +69,7 @@ public class RobotContainer {
             () -> .3,
             () -> 0,
             () -> 0,
-    () -> true));
+            () -> true));
   }
 
   /**
@@ -78,20 +79,20 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    // return new exampleAuto(s_Swerve);
-    return DriveCommands.driveOne(
-      s_Swerve,
-      () -> .3,
-      () -> 0,
-      () -> 0,
-      () -> true)
-    .withTimeout(5)
-    .andThen(DriveCommands.driveOne(    
-      s_Swerve,
-      () -> -.3,
-      () -> 0,
-      () -> 0,
-      () -> true));
+    return new exampleAuto(s_Swerve);
+    // return DriveCommands.driveOne(
+    //   s_Swerve,
+    //   () -> .3,
+    //   () -> 0,
+    //   () -> 0,
+    //   () -> true)
+    // .withTimeout(5)
+    // .andThen(DriveCommands.driveOne(    
+    //   s_Swerve,
+    //   () -> -.3,
+    //   () -> 0,
+    //   () -> 0,
+    //   () -> true));
   }
 
 }
