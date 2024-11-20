@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
+import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
 import java.util.List;
 
@@ -55,6 +56,12 @@ public class exampleAuto extends SequentialCommandGroup {
 
     addCommands(
         new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-        swerveControllerCommand);
+        swerveControllerCommand,
+        new TeleopSwerve(
+            s_Swerve,
+            () -> .3,
+            () -> 0,
+            () -> 0,
+    () -> true));
   }
 }

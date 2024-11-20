@@ -9,34 +9,27 @@ import frc.robot.subsystems.Swerve;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-public class AutonomousSwerve extends Command {
-  private Swerve s_Swerve;
-  private DoubleSupplier translationSup;
-  private DoubleSupplier strafeSup;
-  private DoubleSupplier rotationSup;
-  private BooleanSupplier robotCentricSup;
-  private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
-  private SlewRateLimiter strafeLimiter = new SlewRateLimiter(3.0);
-  private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
-
-  public AutonomousSwerve(
-      Swerve s_Swerve,
-      DoubleSupplier translationSup,
-      DoubleSupplier strafeSup,
-      DoubleSupplier rotationSup,
-      BooleanSupplier robotCentricSup) {
-    this.s_Swerve = s_Swerve;
-    addRequirements(s_Swerve);
-
-    this.translationSup = translationSup;
-    this.strafeSup = strafeSup;
-    this.rotationSup = rotationSup;
-    this.robotCentricSup = robotCentricSup;
+public final class DriveCommands{
+  private DriveCommands()
+  {
   }
 
-  @Override
-  public void execute() {
-    /* Get Values, Deadband*/
+  public static Command driveOne(
+   Swerve s_Swerve,
+   DoubleSupplier translationSup,
+   DoubleSupplier strafeSup,
+   DoubleSupplier rotationSup,
+   BooleanSupplier robotCentricSup
+  )
+  {
+    return Commands.run(() -> {
+
+   SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
+   SlewRateLimiter strafeLimiter = new SlewRateLimiter(3.0);
+   SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
+
+
+
     double translationVal =
         translationLimiter.calculate(
           MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.Swerve.stickDeadband));
@@ -48,10 +41,11 @@ public class AutonomousSwerve extends Command {
             MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Swerve.stickDeadband));
 
     /* Drive */
-    s_Swerve.driveCommand(
+    s_Swerve.drive(
         new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
         rotationVal * Constants.Swerve.maxAngularVelocity,
         robotCentricSup.getAsBoolean(),
         true);
+    }, s_Swerve);
   }
 }
